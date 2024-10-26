@@ -1,0 +1,2 @@
+# gn
+Golang Generator
