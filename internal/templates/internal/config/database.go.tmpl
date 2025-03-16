@@ -1,0 +1,21 @@
+package config
+
+import (
+	"sync"
+)
+
+type DatabaseConfig struct {
+}
+
+var (
+	databaseConfig *DatabaseConfig
+	databaseOnce   sync.Once
+)
+
+// Database ...
+func Database() *DatabaseConfig {
+	databaseOnce.Do(func() {
+		databaseConfig = new(DatabaseConfig)
+	})
+	return databaseConfig
+}

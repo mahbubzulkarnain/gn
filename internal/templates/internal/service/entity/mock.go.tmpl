@@ -1,0 +1,15 @@
+package {{.EntityNameLoweCase}}{{.Version}}service
+
+import (
+    "github.com/stretchr/testify/mock"
+
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}"
+)
+
+// Mock ...
+type Mock struct {
+	mock.Mock
+}
+
+var _ {{.EntityNameLoweCase}}{{.Version}}.Service = new(Mock)
+

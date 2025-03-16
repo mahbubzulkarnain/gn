@@ -1,0 +1,18 @@
+package main
+
+import (
+    "github.com/joho/godotenv"
+
+    "{{.ImportList}}"
+)
+
+// Init remove this func when env != local
+//func init() {
+//	if err := godotenv.Load(); err != nil {
+//		panic(err)
+//	}
+//}
+
+func main() {
+    {{.FuncBody}}
+}

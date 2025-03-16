@@ -1,0 +1,8 @@
+package database
+
+import "gorm.io/gorm"
+
+// Database ...
+type Database interface {
+	Open() (*gorm.DB, error)
+}

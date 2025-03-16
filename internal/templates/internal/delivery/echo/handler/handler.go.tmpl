@@ -1,0 +1,21 @@
+package {{.EntityNameLoweCase}}{{.Version}}
+
+import (
+    "{{.ModuleName}}/internal/service"
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}"
+)
+
+// Handler ...
+type Handler struct {
+    {{.EntityNamePascalCase}}Service {{.EntityNameLoweCase}}{{.Version}}.Service
+}
+
+// New ...
+func New(s service.Service) *Handler {
+    return &Handler{}
+}
+
+// Routes ...
+func (h *Handler) Routes() {
+
+}

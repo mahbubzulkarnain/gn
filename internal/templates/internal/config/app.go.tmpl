@@ -1,0 +1,23 @@
+package config
+
+import (
+	"os"
+	"sync"
+)
+
+type AppConfig struct {
+	ENV string
+}
+
+var (
+	appConfig *AppConfig
+	appOnce   sync.Once
+)
+
+func App() *AppConfig {
+	appOnce.Do(func() {
+		appConfig = new(AppConfig)
+	})
+	appConfig.ENV = os.Getenv("NODE_ENV")
+	return appConfig
+}

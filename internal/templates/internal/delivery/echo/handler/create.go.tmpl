@@ -1,0 +1,27 @@
+package {{.EntityNameLoweCase}}{{.Version}}
+
+import (
+	"net/http"
+
+    "github.com/labstack/echo/v4"
+
+    "{{.ModuleName}}/internal/dto/{{.EntityNameLoweCase}}/{{.Version}}"
+)
+
+// Create ...
+func (h *Handler) Create(c echo.Context) (err error) {
+    req := new(dto{{.EntityNameLoweCase}}{{.Version}}.CreateRequest)
+    if err = c.Bind(req); err != nil {
+		return
+	}
+	if err = c.Validate(req); err != nil {
+		return
+	}
+
+	var res *dto{{.EntityNameLoweCase}}{{.Version}}.CreateResponse
+	if res, err = h.{{.EntityNamePascalCase}}Service.Create(c.Request().Context(), req); err != nil {
+		c.Error(err)
+		return
+	}
+	return c.JSON(http.StatusCreated, res)
+}

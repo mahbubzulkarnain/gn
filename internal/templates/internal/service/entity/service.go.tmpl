@@ -1,0 +1,18 @@
+package {{.EntityNameLoweCase}}{{.Version}}service
+
+import (
+    "gorm.io/gorm"
+
+    "{{.ModuleName}}/repository/{{.EntityNameLoweCase}}/{{.Version}}"
+)
+
+type service struct {
+    {{.EntityNamePascalCase}}Repository {{.EntityNameLoweCase}}{{.Version}}.Repository
+}
+
+// New ...
+func New(db *gorm.DB) {{.EntityNameLoweCase}}{{.Version}}.Service {
+	return service {
+        {{.EntityNamePascalCase}}Repository: repository{{.EntityNameLoweCase}}{{.Version}}.New(db),
+	}
+}

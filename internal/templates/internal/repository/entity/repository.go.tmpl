@@ -1,0 +1,25 @@
+package repository{{.EntityNameLoweCase}}{{.Version}}
+
+import (
+    "gorm.io/gorm"
+
+    "{{.ModuleName}}/internal/domain/{{.EntityNameLoweCase}}/{{.Version}}"
+)
+
+type repository struct {
+    db *gorm.DB
+}
+
+// New ...
+func New(db *gorm.DB) {{.EntityNameLoweCase}}{{.Version}}.Repository {
+    return repository{
+        db: db.Model(&domain{{.EntityNameLoweCase}}{{.Version}}.Model{}),
+    }
+}
+
+// WithTx ...
+func (r repository) WithTx(tx *gorm.DB) {{.EntityNameLoweCase}}{{.Version}}.Repository {
+	return repository {
+		db: tx.Model(&domain{{.EntityNameLoweCase}}{{.Version}}.Model{}),
+	}
+}

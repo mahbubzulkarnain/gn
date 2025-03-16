@@ -1,0 +1,18 @@
+package {{.EntityNameLoweCase}}{{.Version}}service
+
+import (
+	"context"
+
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}"
+)
+
+// Find ...
+func (s service) Find(ctx context.Context, f {{.EntityNameLoweCase}}{{.Version}}.Filter) (*{{.EntityNameLoweCase}}{{.Version}}dto.FindResponse, error) {
+    return s.{{.EntityNamePascalCase}}Repository.Find(ctx, f)
+}
+
+// Find ...
+func (m *Mock) Find(ctx context.Context, f {{.EntityNameLoweCase}}{{.Version}}.Filter) (*{{.EntityNameLoweCase}}{{.Version}}dto.FindResponse, error) {
+	args := m.Called(ctx, f)
+	return args.Get(0).(*{{.EntityNameLoweCase}}{{.Version}}dto.FindResponse), args.Error(1)
+}

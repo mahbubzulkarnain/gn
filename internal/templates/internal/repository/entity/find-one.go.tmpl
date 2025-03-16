@@ -1,0 +1,22 @@
+package repository{{.EntityNameLoweCase}}{{.Version}}
+
+import (
+	"context"
+
+	"{{.ModuleName}}/internal/domain/{{.EntityNameLoweCase}}/{{.Version}}"
+	"{{.ModuleName}}/internal/dto/{{.EntityNameLoweCase}}/{{.Version}}"
+)
+
+// FindOne ...
+func (r repository) FindOne(ctx context.Context, f dto{{.EntityNameLoweCase}}{{.Version}}.Filter) (data *domain{{.EntityNameLoweCase}}{{.Version}}.Model, err error) {
+	if err = r.db.WithContext(ctx).Scopes(f.Apply).Take(&data).Error; err!=nil {
+	    return nil, err
+	}
+	return
+}
+
+// FindOne ...
+func (m *Mock) FindOne(ctx context.Context, f dto{{.EntityNameLoweCase}}{{.Version}}.Filter) (*domain{{.EntityNameLoweCase}}{{.Version}}.Model, error) {
+	args := m.Called(ctx, f)
+	return args.Get(0).(*domain{{.EntityNameLoweCase}}{{.Version}}.Model), args.Error(1)
+}

@@ -1,0 +1,11 @@
+package dto{{.EntityNameLoweCase}}{{.Version}}
+
+import (
+    "gorm.io/gorm"
+)
+
+type Filter struct {}
+
+func (f Filter) Apply(tx *gorm.DB) *gorm.DB {
+    return tx
+}

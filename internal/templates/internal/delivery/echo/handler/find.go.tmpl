@@ -1,0 +1,27 @@
+package {{.EntityNameLoweCase}}{{.Version}}
+
+import (
+	"net/http"
+
+    "github.com/labstack/echo/v4"
+
+    "{{.ModuleName}}/internal/dto/{{.EntityNameLoweCase}}/{{.Version}}"
+)
+
+// Find ...
+func (h *Handler) Find(c echo.Context) (err error) {
+    req := new(dto{{.EntityNameLoweCase}}{{.Version}}.FindRequest)
+    if err = c.Bind(req); err != nil {
+		return
+	}
+	if err = c.Validate(req); err != nil {
+		return
+	}
+
+	var res *dto{{.EntityNameLoweCase}}{{.Version}}.FindResponse
+	if res, err = h.{{.EntityNamePascalCase}}Service.Find(c.Request().Context(), req); err != nil {
+		c.Error(err)
+		return
+	}
+	return c.JSON(http.StatusCreated, res)
+}

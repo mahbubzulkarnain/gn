@@ -1,0 +1,14 @@
+package {{.EntityNameLoweCase}}{{.Version}}
+
+import (
+    "context"
+
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}/dto"
+)
+
+// Service blueprint for service
+type Service interface {
+    Create(context.Context, *{{.EntityNameLoweCase}}{{.Version}}dto.CreateRequest) (*{{.EntityNameLoweCase}}{{.Version}}dto.CreateResponse, error)
+    Find(context.Context, Filter) (*{{.EntityNameLoweCase}}{{.Version}}dto.FindResponse, error)
+    FindOne(context.Context, Filter) (*{{.EntityNameLoweCase}}{{.Version}}dto.FindOneResponse, error)
+}

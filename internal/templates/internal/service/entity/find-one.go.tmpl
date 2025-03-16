@@ -1,0 +1,18 @@
+package {{.EntityNameLoweCase}}{{.Version}}service
+
+import (
+	"context"
+
+	"{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}"
+)
+
+// FindOne ...
+func (s service) FindOne(ctx context.Context, f {{.EntityNameLoweCase}}{{.Version}}.Filter) (*{{.EntityNameLoweCase}}{{.Version}}dto.FindOneResponse, error) {
+    return s.{{.EntityNamePascalCase}}Repository.FindOne(ctx, f)
+}
+
+// FindOne ...
+func (m *Mock) FindOne(ctx context.Context, f {{.EntityNameLoweCase}}{{.Version}}.Filter) (*{{.EntityNameLoweCase}}{{.Version}}dto.FindOneResponse, error) {
+	args := m.Called(ctx, f)
+	return args.Get(0).(*{{.EntityNameLoweCase}}{{.Version}}dto.FindOneResponse), args.Error(1)
+}

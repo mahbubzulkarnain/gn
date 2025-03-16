@@ -1,0 +1,18 @@
+# run "gn generate"
+module:
+  name: github.com/mahbubzulkarnain/todo
+  framework:
+    name: echo
+  entities:
+    - name: Todo
+      version: v1
+      endpoint: /todo/v1
+      sql:
+        name: Todo
+        engine: postgresql
+    - name: User
+      version: v1
+      endpoint: /users/v1
+      sql:
+        name: Users
+        engine: postgresql

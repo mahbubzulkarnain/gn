@@ -1,0 +1,18 @@
+package repository{{.EntityNameLoweCase}}{{.Version}}
+
+import (
+	"context"
+
+	"gorm.io/gorm"
+)
+
+// Create ...
+func (r repository) Create(ctx context.Context, e interface{}) *gorm.DB  {
+	return r.db.WithContext(ctx).Create(e)
+}
+
+// Create ...
+func (m *Mock) Create(ctx context.Context, e interface{}) *gorm.DB {
+	args := m.Called(ctx, e)
+	return args.Get(0).(*gorm.DB)
+}

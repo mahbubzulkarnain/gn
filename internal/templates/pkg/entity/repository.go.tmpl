@@ -1,0 +1,16 @@
+package {{.EntityNameLoweCase}}{{.Version}}
+
+import (
+    "context"
+
+    "gorm.io/gorm"
+)
+
+// Repository blueprint for repository
+type Repository interface {
+    Create(ctx context.Context, e interface{}) *gorm.DB
+    Find(context.Context, Filter) ([]*Model, error)
+    FindOne(ctx context.Context, f Filter) (*Model, error)
+
+    WithTx(*gorm.DB) Repository
+}

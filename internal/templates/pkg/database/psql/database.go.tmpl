@@ -1,0 +1,107 @@
+package databasepsql
+
+import (
+	"database/sql"
+	"fmt"
+	"time"
+
+	"golang.org/x/crypto/ssh"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/plugin/dbresolver"
+
+	apmpostgres "go.elastic.co/apm/module/apmgormv2/v2/driver/postgres"
+)
+
+type ConfigDatabase struct {
+	Host, User, Pass, Port, Name string
+	SSLMode, Tz                  string
+
+	SSHClient *ssh.Client
+}
+
+// DSN ...
+func (c ConfigDatabase) DSN() string {
+	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s", c.Host, c.User, c.Pass, c.Name, c.Port, c.SSLMode, c.Tz)
+}
+
+// Config ...
+type Config struct {
+	Write ConfigDatabase
+	Read  []ConfigDatabase
+}
+
+func (c Config) Open() (db *gorm.DB, err error) {
+	var (
+		dialector  gorm.Dialector
+		driverName string
+	)
+	if c.Write.SSHClient != nil {
+		driverName = fmt.Sprintf("postgres+ssh+%s+write", c.Write.SSHClient.LocalAddr().String())
+
+		found := false
+		for _, d := range sql.Drivers() {
+			if d == driverName {
+				found = true
+			}
+		}
+		if !found {
+			// Now we register the ViaSSHDialer with the ssh connection as a parameter
+			sql.Register(driverName, &ViaSSHDialer{Client: c.Write.SSHClient})
+		}
+
+		dialector = postgres.New(postgres.Config{
+			DriverName: driverName,
+			DSN:        c.Write.DSN(),
+		})
+	} else {
+		dialector = apmpostgres.Open(c.Write.DSN())
+	}
+
+	if db, err = gorm.Open(dialector, &gorm.Config{
+		SkipDefaultTransaction: true,
+		PrepareStmt:            true,
+	}); err != nil {
+		return
+	}
+
+	if len(c.Read) > 0 {
+		var dialectorReplica []gorm.Dialector
+		for i, v := range c.Read {
+			if v.SSHClient != nil {
+				driverName = fmt.Sprintf("postgres+ssh+%s+read_%d", v.SSHClient.LocalAddr().String(), i)
+
+				found := false
+				for _, d := range sql.Drivers() {
+					if d == driverName {
+						found = true
+					}
+				}
+				if !found {
+					// Now we register the ViaSSHDialer with the ssh connection as a parameter
+					sql.Register(driverName, &ViaSSHDialer{Client: v.SSHClient})
+				}
+
+				dialector = postgres.New(postgres.Config{
+					DriverName: driverName,
+					DSN:        v.DSN(),
+				})
+			} else {
+				dialector = apmpostgres.Open(v.DSN())
+			}
+			dialectorReplica = append(dialectorReplica, dialector)
+		}
+
+		if err = db.Use(dbresolver.Register(dbresolver.Config{
+			Replicas: dialectorReplica,
+		}).
+			SetConnMaxIdleTime(time.Hour).       // SetConnMaxIdleTime sets the maximum amount of time a connection may be idle.
+			SetConnMaxLifetime(5 * time.Minute). // SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+			SetMaxIdleConns(5).                  // SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+			SetMaxOpenConns(10),
+		); err != nil {
+			return nil, err
+		}
+	}
+	return
+}

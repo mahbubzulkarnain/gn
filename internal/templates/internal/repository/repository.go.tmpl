@@ -1,0 +1,22 @@
+package repository
+
+import (
+    "gorm.io/gorm"
+)
+
+type V1 struct {}
+
+// Repository ...
+type Repository struct {
+    DB *gorm.DB
+
+    V1
+}
+
+// New ...
+func New(db *gorm.DB) Repository {
+    return Repository{
+        DB: db,
+        V1: V1{},
+    }
+}
