@@ -4,11 +4,21 @@ import (
 	"context"
 
     "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}"
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}/dto"
 )
 
 // Find ...
 func (s service) Find(ctx context.Context, f {{.EntityNameLoweCase}}{{.Version}}.Filter) (*{{.EntityNameLoweCase}}{{.Version}}dto.FindResponse, error) {
-    return s.{{.EntityNamePascalCase}}Repository.Find(ctx, f)
+    var (
+        err error
+        data []*{{.EntityNameLoweCase}}{{.Version}}.Domain
+    )
+    if data, err = s.{{.EntityNamePascalCase}}Repository.Find(ctx, f); err != nil {
+        return nil, err
+    }
+    return &{{.EntityNameLoweCase}}{{.Version}}dto.FindResponse{
+        Data: data,
+    }, nil
 }
 
 // Find ...

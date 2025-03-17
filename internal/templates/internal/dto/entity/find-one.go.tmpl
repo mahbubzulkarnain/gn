@@ -1,5 +1,7 @@
-package dto{{.EntityNameLoweCase}}{{.Version}}
+package {{.EntityNameLoweCase}}{{.Version}}dto
 
 type FindOneRequest struct {}
 
-type FindOneResponse struct {}
+type FindOneResponse struct {
+    Data *Domain
+}

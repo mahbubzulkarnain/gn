@@ -92,7 +92,7 @@ var generateCmd = &cobra.Command{
 			switch c.Module.Framework.Name {
 			case config.FrameworkEngineEcho:
 				if err = generator.New(
-					path.Join(config.App().Dir.Implment.Delivery, entityNameSlug, entityConfig.Version),
+					path.Join(config.App().Dir.Application.Delivery, entityNameSlug, entityConfig.Version),
 					path.Join(config.App().Dir.Template.Delivery, `handler`),
 					map[string]interface{}{
 						"ModuleName":           config.App().ModuleName,

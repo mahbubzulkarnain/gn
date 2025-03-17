@@ -13,30 +13,40 @@ type AppConfigPKGListMap struct {
 	Version string
 }
 
-type AppConfigDirImplement struct {
-	Path       string
-	Config     string
-	DTO        string
+type AppConfigDirFunc func(entitySlug, entityVersion string) string
+
+type AppConfigDirApplication struct {
 	Delivery   string
-	Domain     string
+	Config     string
 	Repository string
 	Service    string
+}
+
+type AppConfigDirPKG struct {
+	Path       string
+	DTO        AppConfigDirFunc
+	Domain     AppConfigDirFunc
+	Entity     AppConfigDirFunc
+	Repository AppConfigDirFunc
+	Service    AppConfigDirFunc
 }
 
 type AppConfigDirTemplate struct {
 	Path       string
 	Config     string
 	DTO        string
-	Delivery   string
 	Domain     string
+	Delivery   string
+	Entity     string
 	Repository string
 	Service    string
 }
 
 type AppConfigDir struct {
-	Internal string
-	Implment AppConfigDirImplement
-	Template AppConfigDirTemplate
+	Internal    string
+	Application AppConfigDirApplication
+	PKG         AppConfigDirPKG
+	Template    AppConfigDirTemplate
 }
 
 type AppConfig struct {
@@ -70,21 +80,37 @@ func App() *AppConfig {
 			}
 		}
 
-		appConfig.Dir.Implment.Path = path.Join("internal")
-		appConfig.Dir.Implment.Config = path.Join("internal", "config")
-		appConfig.Dir.Implment.DTO = path.Join("internal", "dto")
-		appConfig.Dir.Implment.Delivery = path.Join("internal", "delivery")
-		appConfig.Dir.Implment.Domain = path.Join("internal", "domain")
-		appConfig.Dir.Implment.Repository = path.Join("internal", "repository")
-		appConfig.Dir.Implment.Service = path.Join("internal", "service")
-
 		appConfig.Dir.Template.Path = path.Join(appConfig.Dir.Internal, "templates")
 		appConfig.Dir.Template.Config = path.Join(appConfig.Dir.Template.Path, "internal", "config")
 		appConfig.Dir.Template.DTO = path.Join(appConfig.Dir.Template.Path, "internal", "dto", "entity")
-		appConfig.Dir.Template.Delivery = path.Join(appConfig.Dir.Template.Path, "internal", "delivery", "echo")
 		appConfig.Dir.Template.Domain = path.Join(appConfig.Dir.Template.Path, "internal", "domain", "entity")
+		appConfig.Dir.Template.Delivery = path.Join(appConfig.Dir.Template.Path, "internal", "delivery", "echo")
+		appConfig.Dir.Template.Entity = path.Join(appConfig.Dir.Template.Path, "pkg", "entity")
 		appConfig.Dir.Template.Repository = path.Join(appConfig.Dir.Template.Path, "internal", "repository", "entity")
 		appConfig.Dir.Template.Service = path.Join(appConfig.Dir.Template.Path, "internal", "service", "entity")
+
+		appConfig.Dir.Application.Delivery = path.Join("internal", "delivery")
+		appConfig.Dir.Application.Config = path.Join("internal", "config")
+		appConfig.Dir.Application.Repository = path.Join("internal", "repository")
+		appConfig.Dir.Application.Service = path.Join("internal", "service")
+
+		appConfig.Dir.PKG.Path = path.Join("pkg")
+		appConfig.Dir.PKG.DTO = func(entitySlug, entityVersion string) string {
+			return path.Join(appConfig.Dir.PKG.Path, entitySlug, entityVersion, "dto")
+		}
+		appConfig.Dir.PKG.Repository = func(entitySlug, entityVersion string) string {
+			return path.Join(appConfig.Dir.PKG.Path, entitySlug, entityVersion, "repository")
+		}
+
+		appConfig.Dir.PKG.Domain = func(entitySlug, entityVersion string) string {
+			return path.Join(appConfig.Dir.PKG.Path, entitySlug, entityVersion, "domain")
+		}
+		appConfig.Dir.PKG.Entity = func(entitySlug, entityVersion string) string {
+			return path.Join(appConfig.Dir.PKG.Path, entitySlug, entityVersion)
+		}
+		appConfig.Dir.PKG.Service = func(entitySlug, entityVersion string) string {
+			return path.Join(appConfig.Dir.PKG.Path, entitySlug, entityVersion, "service")
+		}
 	})
 	return appConfig
 }

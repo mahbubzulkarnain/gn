@@ -1,22 +1,21 @@
-package repository{{.EntityNameLoweCase}}{{.Version}}
+package {{.EntityNameLoweCase}}{{.Version}}repository
 
 import (
     "context"
 
-    "{{.ModuleName}}/internal/domain/{{.EntityNameLoweCase}}/{{.Version}}"
-    "{{.ModuleName}}/internal/dto/{{.EntityNameLoweCase}}/{{.Version}}"
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}"
 )
 
 // IDs ...
-func (r repository) IDs(ctx context.Context, f dto{{.EntityNameLoweCase}}{{.Version}}.Filter) (data []int, err error) {
-	if err = r.db.WithContext(ctx).Model(&domain{{.EntityNameLoweCase}}{{.Version}}.Model{}).Scopes(f.Apply).Pluck(`id`, &data).Error; err!=nil {
+func (r repository) IDs(ctx context.Context, f {{.EntityNameLoweCase}}{{.Version}}dto.Filter) (data []int, err error) {
+	if err = r.db.WithContext(ctx).Scopes(f.Apply).Pluck(`id`, &data).Error; err!=nil {
 	    return nil, err
 	}
 	return
 }
 
 // IDs ...
-func (m *Mock) IDs(ctx context.Context, f dto{{.EntityNameLoweCase}}{{.Version}}.Filter) ([]int, error) {
+func (m *Mock) IDs(ctx context.Context, f {{.EntityNameLoweCase}}{{.Version}}dto.Filter) ([]int, error) {
 	args := m.Called(ctx, f)
 	return args.Get(0).([]int), args.Error(1)
 }

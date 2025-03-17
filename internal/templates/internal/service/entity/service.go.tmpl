@@ -3,7 +3,8 @@ package {{.EntityNameLoweCase}}{{.Version}}service
 import (
     "gorm.io/gorm"
 
-    "{{.ModuleName}}/repository/{{.EntityNameLoweCase}}/{{.Version}}"
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}"
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}/repository"
 )
 
 type service struct {
@@ -13,6 +14,6 @@ type service struct {
 // New ...
 func New(db *gorm.DB) {{.EntityNameLoweCase}}{{.Version}}.Service {
 	return service {
-        {{.EntityNamePascalCase}}Repository: repository{{.EntityNameLoweCase}}{{.Version}}.New(db),
+        {{.EntityNamePascalCase}}Repository: {{.EntityNameLoweCase}}{{.Version}}repository.New(db),
 	}
 }

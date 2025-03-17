@@ -62,8 +62,21 @@ func serviceGenerator(req serviceRequest) (err error) {
 	}
 
 	if err = generator.New(
-		path.Join(config.App().Dir.Implment.Service, req.EntityNameSlug, req.Version),
+		path.Join(config.App().Dir.PKG.Service(req.EntityNameSlug, req.Version)),
 		path.Join(config.App().Dir.Template.Service),
+		map[string]interface{}{
+			"EntityNamePascalCase": req.EntityNamePascalCase,
+			"EntityNameLoweCase":   req.EntityNameLoweCase,
+			"ModuleName":           config.App().ModuleName,
+			"Version":              req.Version,
+		},
+	).Generate(); err != nil {
+		return
+	}
+
+	if err = generator.New(
+		path.Join(config.App().Dir.PKG.Entity(req.EntityNameSlug, req.Version), "service.go"),
+		path.Join(config.App().Dir.Template.Entity, `service.go.tmpl`),
 		map[string]interface{}{
 			"EntityNamePascalCase": req.EntityNamePascalCase,
 			"EntityNameLoweCase":   req.EntityNameLoweCase,

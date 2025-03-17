@@ -63,7 +63,7 @@ func projectGenerator(req projectRequest) (err error) {
 		}
 
 		if err = generator.New(
-			path.Join(config.App().Dir.Implment.Delivery, `http.go`),
+			path.Join(config.App().Dir.Application.Delivery, `http.go`),
 			path.Join(config.App().Dir.Template.Delivery, `server.go.tmpl`),
 			map[string]interface{}{
 				"ModuleName": config.App().ModuleName,
@@ -78,7 +78,7 @@ func projectGenerator(req projectRequest) (err error) {
 			map[string]interface{}{
 				`ModuleName`: config.App().ModuleName,
 				`ImportList`: strings.Join([]string{
-					path.Join(config.App().ModuleName, config.App().Dir.Implment.Delivery),
+					path.Join(config.App().ModuleName, config.App().Dir.Application.Delivery),
 				}, "\n"),
 				`FuncBody`: `delivery.HTTP(nil)`,
 			},
@@ -88,7 +88,7 @@ func projectGenerator(req projectRequest) (err error) {
 	}
 
 	if err = generator.New(
-		path.Join(config.App().Dir.Implment.Config),
+		path.Join(config.App().Dir.Application.Config),
 		path.Join(config.App().Dir.Template.Config),
 		nil,
 	).Generate(); err != nil {
@@ -96,7 +96,7 @@ func projectGenerator(req projectRequest) (err error) {
 	}
 
 	if err = generator.New(
-		path.Join(config.App().Dir.Implment.Repository, "repository.go"),
+		path.Join(config.App().Dir.Application.Repository, "repository.go"),
 		path.Join(config.App().Dir.Template.Path, "internal", `repository`, "repository.go.tmpl"),
 		map[string]interface{}{
 			"ModuleName": config.App().ModuleName,
@@ -106,7 +106,7 @@ func projectGenerator(req projectRequest) (err error) {
 	}
 
 	if err = generator.New(
-		path.Join(config.App().Dir.Implment.Service, "service.go"),
+		path.Join(config.App().Dir.Application.Service, "service.go"),
 		path.Join(config.App().Dir.Template.Path, "internal", `service`, "service.go.tmpl"),
 		map[string]interface{}{
 			"ModuleName": config.App().ModuleName,
@@ -117,7 +117,7 @@ func projectGenerator(req projectRequest) (err error) {
 
 	if config.App().UseSQL {
 		if err = generator.New(
-			path.Join("pkg", "database"),
+			path.Join(config.App().Dir.PKG.Path, "database"),
 			path.Join(config.App().Dir.Template.Path, "pkg", `database`),
 			nil,
 		).Generate(); err != nil {

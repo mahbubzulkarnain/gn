@@ -46,7 +46,7 @@ func dtoGenerator(req dtoRequest) (err error) {
 	}
 
 	if err = generator.New(
-		path.Join(config.App().Dir.Implment.DTO, req.EntityNameSlug, req.Version),
+		config.App().Dir.PKG.DTO(req.EntityNameSlug, req.Version),
 		path.Join(config.App().Dir.Template.DTO),
 		map[string]interface{}{
 			"EntityNameLoweCase": req.EntityNameLoweCase,

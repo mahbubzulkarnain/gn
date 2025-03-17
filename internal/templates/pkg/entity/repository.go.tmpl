@@ -4,13 +4,15 @@ import (
     "context"
 
     "gorm.io/gorm"
+
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}/dto"
 )
 
 // Repository blueprint for repository
 type Repository interface {
     Create(ctx context.Context, e interface{}) *gorm.DB
-    Find(context.Context, Filter) ([]*Model, error)
-    FindOne(ctx context.Context, f Filter) (*Model, error)
+    Find(ctx context.Context, f {{.EntityNameLoweCase}}{{.Version}}dto.Filter) ([]*{{.EntityNameLoweCase}}{{.Version}}dto.Domain, error)
+    FindOne(ctx context.Context, f {{.EntityNameLoweCase}}{{.Version}}dto.Filter) (*{{.EntityNameLoweCase}}{{.Version}}dto.Domain, error)
 
     WithTx(*gorm.DB) Repository
 }

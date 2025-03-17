@@ -11,9 +11,9 @@ import (
 func (s service) Create(ctx context.Context, req *{{.EntityNameLoweCase}}{{.Version}}dto.CreateRequest) (*{{.EntityNameLoweCase}}{{.Version}}dto.CreateResponse, error) {
     var (
         err error
-        data = &{{.EntityNameLoweCase}}{{.Version}}.Model{}
+        data = &{{.EntityNameLoweCase}}{{.Version}}.Domain{}
     )
-    if err = s.{{.EntityNamePascalCase}}Repository.Create(ctx, data).Error;err!=nil {
+    if err = s.{{.EntityNamePascalCase}}Repository.Create(ctx, data).Error;err != nil {
         return nil, err
     }
     return &{{.EntityNameLoweCase}}{{.Version}}dto.CreateResponse{}, nil

@@ -1,0 +1,17 @@
+package {{.EntityNameLoweCase}}{{.Version}}dto
+
+import (
+	"gorm.io/gorm"
+)
+
+// Domain ...
+type Domain struct {
+    Entity
+
+    gorm.Model
+}
+
+// TableName ...
+func (Domain) TableName() string {
+	return "{{.TableName}}"
+}

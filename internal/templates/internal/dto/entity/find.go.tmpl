@@ -1,5 +1,8 @@
-package dto{{.EntityNameLoweCase}}{{.Version}}
+package {{.EntityNameLoweCase}}{{.Version}}dto
 
 type FindRequest struct {}
 
-type FindResponse struct {}
+// FindResponse ...
+type FindResponse struct {
+    Data []*Domain
+}

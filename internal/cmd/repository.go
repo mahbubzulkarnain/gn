@@ -83,34 +83,7 @@ func repositoryGenerator(req repositoryRequest) (err error) {
 	}
 
 	if err = generator.New(
-		path.Join(config.App().Dir.Implment.Domain, req.EntityNameSlug, req.Version),
-		path.Join(config.App().Dir.Template.Domain),
-		map[string]interface{}{
-			"EntityNamePascalCase": req.EntityNamePascalCase,
-			"EntityNameLoweCase":   req.EntityNameLoweCase,
-			"ModuleName":           config.App().ModuleName,
-			"Version":              req.Version,
-			"TableName":            req.TableName,
-		},
-	).Generate(); err != nil {
-		return
-	}
-
-	if err = generator.New(
-		path.Join(config.App().Dir.Implment.DTO, req.EntityNameSlug, req.Version, "filter.go"),
-		path.Join(config.App().Dir.Template.DTO, `filter.go.tmpl`),
-		map[string]interface{}{
-			"EntityNamePascalCase": req.EntityNamePascalCase,
-			"EntityNameLoweCase":   req.EntityNameLoweCase,
-			"ModuleName":           config.App().ModuleName,
-			"Version":              req.Version,
-		},
-	).Generate(); err != nil {
-		return
-	}
-
-	if err = generator.New(
-		path.Join(config.App().Dir.Implment.Repository, req.EntityNameSlug, req.Version),
+		path.Join(config.App().Dir.PKG.Repository(req.EntityNameSlug, req.Version)),
 		path.Join(config.App().Dir.Template.Repository),
 		map[string]interface{}{
 			"EntityNameLoweCase":   req.EntityNameLoweCase,
@@ -118,6 +91,20 @@ func repositoryGenerator(req repositoryRequest) (err error) {
 			"ModuleName":           config.App().ModuleName,
 			"TableName":            req.TableName,
 			"Version":              req.Version,
+		},
+	).Generate(); err != nil {
+		return
+	}
+
+	if err = generator.New(
+		path.Join(config.App().Dir.PKG.Entity(req.EntityNameSlug, req.Version), "repository.go"),
+		path.Join(config.App().Dir.Template.Entity, `repository.go.tmpl`),
+		map[string]interface{}{
+			"EntityNamePascalCase": req.EntityNamePascalCase,
+			"EntityNameLoweCase":   req.EntityNameLoweCase,
+			"ModuleName":           config.App().ModuleName,
+			"Version":              req.Version,
+			"TableName":            req.TableName,
 		},
 	).Generate(); err != nil {
 		return

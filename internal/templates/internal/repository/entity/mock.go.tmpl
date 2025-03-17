@@ -1,10 +1,10 @@
-package repository{{.EntityNameLoweCase}}{{.Version}}
+package {{.EntityNameLoweCase}}{{.Version}}repository
 
 import (
 	"github.com/stretchr/testify/mock"
 	"gorm.io/gorm"
 
-	"{{.ModuleName}}/internal/domain/{{.EntityNameLoweCase}}/{{.Version}}"
+	"{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}"
 )
 
 // Mock ...

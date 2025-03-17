@@ -1,9 +1,10 @@
-package repository{{.EntityNameLoweCase}}{{.Version}}
+package {{.EntityNameLoweCase}}{{.Version}}repository
 
 import (
     "gorm.io/gorm"
 
-    "{{.ModuleName}}/internal/domain/{{.EntityNameLoweCase}}/{{.Version}}"
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}"
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}/dto"
 )
 
 type repository struct {
@@ -13,13 +14,13 @@ type repository struct {
 // New ...
 func New(db *gorm.DB) {{.EntityNameLoweCase}}{{.Version}}.Repository {
     return repository{
-        db: db.Model(&domain{{.EntityNameLoweCase}}{{.Version}}.Model{}),
+        db: db.Model(&{{.EntityNameLoweCase}}{{.Version}}dto.Domain{}),
     }
 }
 
 // WithTx ...
 func (r repository) WithTx(tx *gorm.DB) {{.EntityNameLoweCase}}{{.Version}}.Repository {
 	return repository {
-		db: tx.Model(&domain{{.EntityNameLoweCase}}{{.Version}}.Model{}),
+		db: tx.Model(&{{.EntityNameLoweCase}}{{.Version}}dto.Domain{}),
 	}
 }

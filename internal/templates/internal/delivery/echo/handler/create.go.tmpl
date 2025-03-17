@@ -5,12 +5,12 @@ import (
 
     "github.com/labstack/echo/v4"
 
-    "{{.ModuleName}}/internal/dto/{{.EntityNameLoweCase}}/{{.Version}}"
+    "{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}/dto"
 )
 
 // Create ...
 func (h *Handler) Create(c echo.Context) (err error) {
-    req := new(dto{{.EntityNameLoweCase}}{{.Version}}.CreateRequest)
+    req := new({{.EntityNameLoweCase}}{{.Version}}dto.CreateRequest)
     if err = c.Bind(req); err != nil {
 		return
 	}
@@ -18,7 +18,7 @@ func (h *Handler) Create(c echo.Context) (err error) {
 		return
 	}
 
-	var res *dto{{.EntityNameLoweCase}}{{.Version}}.CreateResponse
+	var res *{{.EntityNameLoweCase}}{{.Version}}dto.CreateResponse
 	if res, err = h.{{.EntityNamePascalCase}}Service.Create(c.Request().Context(), req); err != nil {
 		c.Error(err)
 		return

@@ -1,14 +1,13 @@
-package repository{{.EntityNameLoweCase}}{{.Version}}
+package {{.EntityNameLoweCase}}{{.Version}}repository
 
 import (
 	"context"
 
-	"{{.ModuleName}}/internal/domain/{{.EntityNameLoweCase}}/{{.Version}}"
-	"{{.ModuleName}}/internal/dto/{{.EntityNameLoweCase}}/{{.Version}}"
+	"{{.ModuleName}}/pkg/{{.EntityNameLoweCase}}/{{.Version}}"
 )
 
 // FindOne ...
-func (r repository) FindOne(ctx context.Context, f dto{{.EntityNameLoweCase}}{{.Version}}.Filter) (data *domain{{.EntityNameLoweCase}}{{.Version}}.Model, err error) {
+func (r repository) FindOne(ctx context.Context, f {{.EntityNameLoweCase}}{{.Version}}dto.Filter) (data *{{.EntityNameLoweCase}}{{.Version}}dto.Domain, err error) {
 	if err = r.db.WithContext(ctx).Scopes(f.Apply).Take(&data).Error; err!=nil {
 	    return nil, err
 	}
@@ -16,7 +15,7 @@ func (r repository) FindOne(ctx context.Context, f dto{{.EntityNameLoweCase}}{{.
 }
 
 // FindOne ...
-func (m *Mock) FindOne(ctx context.Context, f dto{{.EntityNameLoweCase}}{{.Version}}.Filter) (*domain{{.EntityNameLoweCase}}{{.Version}}.Model, error) {
+func (m *Mock) FindOne(ctx context.Context, f {{.EntityNameLoweCase}}{{.Version}}dto.Filter) (*{{.EntityNameLoweCase}}{{.Version}}dto.Domain, error) {
 	args := m.Called(ctx, f)
-	return args.Get(0).(*domain{{.EntityNameLoweCase}}{{.Version}}.Model), args.Error(1)
+	return args.Get(0).(*{{.EntityNameLoweCase}}{{.Version}}.Domain), args.Error(1)
 }
